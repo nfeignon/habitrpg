@@ -14,6 +14,8 @@ script(id='partials/options.settings.html', type="text/ng-template")
         | Coupon
     li(ng-class="{ active: $state.includes('options.settings.subscription') }")
       a(ui-sref='options.settings.subscription')=env.t('subscription')
+    li(ng-class="{ active: $state.includes('options.settings.notifications') }")
+      a(ui-sref='options.settings.notifications')=env.t('notifications')
 
   .tab-content
     .tab-pane.active
@@ -241,6 +243,20 @@ script(id='partials/feature-matrix-check.html',type='text/ng-template')
   span.task-checker.action-yesno
     input.focusable(type='checkbox', checked)
     label
+
+script(id='partials/options.settings.notifications.html', type="text/ng-template")
+  .container-fluid
+    .row
+      .col-md-6
+        h2=env.t('notifications')
+        small=env.t('saveData')
+        h4=env.t('habitHistory')
+        =env.t('exportHistory')
+        a(href="/export/history.csv")= ' ' + env.t('csv')
+        h4=env.t('userData')
+        =env.t('exportUserData')
+        a(href="/export/userdata.xml")= ' ' + env.t('xml') + ' '
+        a(href="/export/userdata.json")= env.t('json')
 
 script(id='partials/options.settings.subscription.html',type='text/ng-template')
   //-h2=env.t('individualSub')
