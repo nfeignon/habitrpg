@@ -70,27 +70,30 @@ module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
   if(mailingInfoArray.length === 1 && mailingInfoArray[0].name){
     variables.push({name: 'RECIPIENT_NAME', content: mailingInfoArray[0].name});
   }
-
-  if(isProd && mailingInfoArray.length > 0) request({
-    url: nconf.get('EMAIL_SERVER:url') + '/job',
-    method: 'POST',
-    auth: {
-      user: nconf.get('EMAIL_SERVER:authUser'),
-      pass: nconf.get('EMAIL_SERVER:authPassword')
-    },
-    json: {
-      type: 'email',
-      data: {
-        emailType: emailType,
-        to: mailingInfoArray,
-        variables: variables
+  
+  if(isProd && mailingInfoArray.length > 0){
+    console.log(emailType, mailingInfoArray, variables)
+    request({
+      url: nconf.get('EMAIL_SERVER:url') + '/job',
+      method: 'POST',
+      auth: {
+        user: nconf.get('EMAIL_SERVER:authUser'),
+        pass: nconf.get('EMAIL_SERVER:authPassword')
       },
-      options: {
-        attemps: 5,
-        backoff: {delay: 10*60*1000, type: 'fixed'}
+      json: {
+        type: 'email',
+        data: {
+          emailType: emailType,
+          to: mailingInfoArray,
+          variables: variables
+        },
+        options: {
+          attemps: 5,
+          backoff: {delay: 10*60*1000, type: 'fixed'}
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 // Encryption using http://dailyjs.com/2010/12/06/node-tutorial-5/
