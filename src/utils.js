@@ -4,7 +4,10 @@ var crypto = require('crypto');
 var path = require("path");
 var request = require('request');
 
-var isProd = nconf.get('NODE_ENV') === 'production';
+// Must use a function here because config is set up in this file, FIXME
+var isProd = function(){
+  return nconf.get('NODE_ENV') === 'production';
+};
 
 module.exports.ga = undefined; // set Google Analytics on nconf init
 
@@ -53,6 +56,7 @@ function getUserInfo(user, fields) {
 module.exports.getUserInfo = getUserInfo;
 
 module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
+  console.log(mailingInfoArray);
   var mailingInfoArray = Array.isArray(mailingInfoArray) ? mailingInfoArray : [mailingInfoArray];
   var variables = [
     {name: 'BASE_URL', content: nconf.get('BASE_URL')},
@@ -73,7 +77,7 @@ module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
 
   console.log(emailType, mailingInfoArray, variables, isProd, isProd && mailingInfoArray.length > 0)
   
-  if(isProd && mailingInfoArray.length > 0){
+  if(isProd() && mailingInfoArray.length > 0){
     console.log(emailType, mailingInfoArray, variables)
     request({
       url: nconf.get('EMAIL_SERVER:url') + '/job',
