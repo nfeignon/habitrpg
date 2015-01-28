@@ -86,6 +86,7 @@ script(type='text/ng-template', id='partials/options.settings.settings.html')
                   |&nbsp;
                   =env.t('subWarning3')
 
+      .personal-options.col-md-6
         .panel.panel-default
           .panel-heading
             span Registration
@@ -247,16 +248,38 @@ script(id='partials/feature-matrix-check.html',type='text/ng-template')
 script(id='partials/options.settings.notifications.html', type="text/ng-template")
   .container-fluid
     .row
-      .col-md-6
-        h2=env.t('notifications')
-        small=env.t('saveData')
-        h4=env.t('habitHistory')
-        =env.t('exportHistory')
-        a(href="/export/history.csv")= ' ' + env.t('csv')
-        h4=env.t('userData')
-        =env.t('exportUserData')
-        a(href="/export/userdata.xml")= ' ' + env.t('xml') + ' '
-        a(href="/export/userdata.json")= env.t('json')
+      .personal-options.col-md-6
+        .panel.panel-default
+          .panel-heading
+            =env.t('emails')
+          .panel-body
+
+            small You can choose which emails you want to receive and can also unsubscribe from all the emails using the button at the bottom
+
+            h5 Events emails
+
+            .checkbox
+              label
+                input(type='checkbox', ng-model='user.preferences.emailNotifications.newPM', ng-change='set({"preferences.emailNotifications.newPM": user.preferences.emailNotifications.newPM ? true: false})')
+                span.hint=env.t('newPM')
+
+            //hr
+
+            //.checkbox
+              label
+                input(type='checkbox', ng-model='user.preferences.emailNotifications.others', ng-change='set({"preferences.emailNotifications.others": user.preferences.emailNotifications.others ? true: false})')
+                span.hint=env.t('othersEmails')
+            
+            //small Such as marketing emails...
+
+            hr
+
+            .checkbox
+              label
+                input(type='checkbox', ng-model='user.preferences.emailNotifications.unsubscribeFromAll', ng-change='set({"preferences.emailNotifications.unsubscribeFromAll": user.preferences.emailNotifications.unsubscribeFromAll ? true: false})')
+                span.hint=env.t('disableAllTheEmail')
+            
+            small You won't receive any email from HabitRPG
 
 script(id='partials/options.settings.subscription.html',type='text/ng-template')
   //-h2=env.t('individualSub')
