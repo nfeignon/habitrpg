@@ -70,6 +70,8 @@ module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
   if(mailingInfoArray.length === 1 && mailingInfoArray[0].name){
     variables.push({name: 'RECIPIENT_NAME', content: mailingInfoArray[0].name});
   }
+
+  console.log(emailType, mailingInfoArray, variables, isProd, isProd && mailingInfoArray.length > 0)
   
   if(isProd && mailingInfoArray.length > 0){
     console.log(emailType, mailingInfoArray, variables)
