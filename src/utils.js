@@ -56,7 +56,6 @@ function getUserInfo(user, fields) {
 module.exports.getUserInfo = getUserInfo;
 
 module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
-  console.log(mailingInfoArray);
   var mailingInfoArray = Array.isArray(mailingInfoArray) ? mailingInfoArray : [mailingInfoArray];
   var variables = [
     {name: 'BASE_URL', content: nconf.get('BASE_URL')},
@@ -74,11 +73,8 @@ module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
   if(mailingInfoArray.length === 1 && mailingInfoArray[0].name){
     variables.push({name: 'RECIPIENT_NAME', content: mailingInfoArray[0].name});
   }
-
-  console.log(emailType, mailingInfoArray, variables, isProd, isProd && mailingInfoArray.length > 0)
   
   if(isProd() && mailingInfoArray.length > 0){
-    console.log(emailType, mailingInfoArray, variables)
     request({
       url: nconf.get('EMAIL_SERVER:url') + '/job',
       method: 'POST',
