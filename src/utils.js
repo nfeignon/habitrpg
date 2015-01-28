@@ -54,7 +54,10 @@ module.exports.getUserInfo = getUserInfo;
 
 module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
   var mailingInfoArray = Array.isArray(mailingInfoArray) ? mailingInfoArray : [mailingInfoArray];
-  var variables = [{name: 'BASE_URL', content: nconf.get('BASE_URL')}].concat(variables || []);
+  var variables = [
+    {name: 'BASE_URL', content: nconf.get('BASE_URL')},
+    {name: 'EMAIL_SETTINGS_URL', content: nconf.get('BASE_URL') + '/#/options/settings/notifications'}
+  ].concat(variables || []);
 
   // It's important to pass at least a user with its `preferences` as we need to check if he unsubscribed
   mailingInfoArray = mailingInfoArray.map(function(mailingInfo){
