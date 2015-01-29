@@ -4,10 +4,8 @@ var crypto = require('crypto');
 var path = require("path");
 var request = require('request');
 
-// Must use a function here because config is set up in this file, FIXME
-var isProd = function(){
-  return nconf.get('NODE_ENV') === 'production';
-};
+// Set when utils.setupConfig is run
+var isProd, baseUrl;
 
 module.exports.ga = undefined; // set Google Analytics on nconf init
 
@@ -58,8 +56,8 @@ module.exports.getUserInfo = getUserInfo;
 module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
   var mailingInfoArray = Array.isArray(mailingInfoArray) ? mailingInfoArray : [mailingInfoArray];
   var variables = [
-    {name: 'BASE_URL', content: nconf.get('BASE_URL')},
-    {name: 'EMAIL_SETTINGS_URL', content: nconf.get('BASE_URL') + '/#/options/settings/notifications'}
+    {name: 'BASE_URL', content: baseUrl},
+    {name: 'EMAIL_SETTINGS_URL', content: baseUrl + '/#/options/settings/notifications'}
   ].concat(variables || []);
 
   // It's important to pass at least a user with its `preferences` as we need to check if he unsubscribed
@@ -74,7 +72,7 @@ module.exports.txnEmail = function(mailingInfoArray, emailType, variables){
     variables.push({name: 'RECIPIENT_NAME', content: mailingInfoArray[0].name});
   }
   
-  if(isProd() && mailingInfoArray.length > 0){
+  if(isProd && mailingInfoArray.length > 0){
     request({
       url: nconf.get('EMAIL_SERVER:url') + '/job',
       method: 'POST',
@@ -124,6 +122,9 @@ module.exports.setupConfig = function(){
     Error.stackTraceLimit = Infinity;
   if (nconf.get('NODE_ENV') === 'production')
     require('newrelic');
+
+  isProd = nconf.get('NODE_ENV') === 'production';
+  baseUrl = nconf.get('BASE_URL');
 
   module.exports.ga = require('universal-analytics')(nconf.get('GA_ID'));
 };

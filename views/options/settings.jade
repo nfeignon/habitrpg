@@ -263,6 +263,11 @@ script(id='partials/options.settings.notifications.html', type="text/ng-template
                 input(type='checkbox', ng-model='user.preferences.emailNotifications.newPM', ng-change='set({"preferences.emailNotifications.newPM": user.preferences.emailNotifications.newPM ? true: false})')
                 span.hint=env.t('newPM')
 
+            .checkbox
+              label
+                input(type='checkbox', ng-model='user.preferences.emailNotifications.wonChallenge', ng-change='set({"preferences.emailNotifications.wonChallenge": user.preferences.emailNotifications.wonChallenge ? true: false})')
+                span.hint=env.t('wonChallenge')
+
             //hr
 
             //.checkbox
